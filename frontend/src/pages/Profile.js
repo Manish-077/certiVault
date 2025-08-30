@@ -158,7 +158,7 @@ function Profile() {
                 )}
               </div>
               <div className="card-actions">
-                <a href={cert.fileUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm flex items-center gap-1">
+                <a href={`${BASE_URL}${cert.fileUrl}`} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm flex items-center gap-1">
                   <FaEye /> View
                 </a>
                 <button onClick={() => handleDelete(cert._id)} className="btn btn-danger btn-sm flex items-center gap-1">

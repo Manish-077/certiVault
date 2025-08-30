@@ -144,7 +144,7 @@ function PublicProfile() {
                 )}
               </div>
               <div className="card-actions">
-                <a href={cert.fileUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">View Certificate</a>
+                <a href={`${BASE_URL}${cert.fileUrl}`} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">View Certificate</a>
                 <ShareSection shareUrl={`${BASE_URL}${cert.fileUrl}`} title={cert.name} />
               </div>
             </div>
