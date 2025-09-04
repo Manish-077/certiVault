@@ -1,17 +1,19 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
-import multer from 'multer';
+
 
 // Routes
 import authRouter from './routes/auth.js';
 import certRouter from './routes/certificateRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 
 dotenv.config(); // ✅ load .env
 
@@ -24,7 +26,15 @@ const MONGO_URI = process.env.MONGO_URI;
 console.log("Loaded MONGO_URI:", MONGO_URI ? "✅ Found" : "❌ Missing");
 
 // Middleware
-app.use(cors());
+app.use(helmet());
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'YOUR_FRONTEND_URL' // Replace with your actual frontend URL in .env
+    : 'http://localhost:3000', // For development
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(morgan('dev'));
 
@@ -38,29 +48,13 @@ app.use((req, res, next) => {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Local uploads storage
 const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadsDir),
-  filename: (_req, file, cb) => {
-    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, `${unique}${ext}`);
-  }
-});
-const upload = multer({ storage });
 
 // Serve uploaded files statically
 app.use('/uploads', express.static(uploadsDir));
 
 // MongoDB connection
-mongoose.connect(MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(MONGO_URI)
 .then(() => console.log("✅ Connected to MongoDB"))
 .catch((err) => {
   console.error("❌ MongoDB connection error:", err.message);
@@ -71,13 +65,8 @@ mongoose.connect(MONGO_URI, {
 app.use('/api/auth', authRouter);
 app.use('/api/certificates', certRouter);
 app.use('/api/users', userRoutes);
+app.use('/api/upload', uploadRoutes);
 
-// File upload endpoint
-app.post('/api/upload', upload.single('file'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  const publicUrl = `/uploads/${req.file.filename}`;
-  res.status(201).json({ url: publicUrl });
-});
 
 // Health check
 app.get('/health', (_req, res) => res.json({ ok: true }));
@@ -89,6 +78,12 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
   });
 }
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 // Start server
 app.listen(PORT, () => console.log(`🚀 API running on port ${PORT}`));

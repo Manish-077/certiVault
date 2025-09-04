@@ -17,6 +17,8 @@ function CertificateUploader({ onUploadSuccess }) {
   const [success, setSuccess] = useState('');
   const [filePreview, setFilePreview] = useState('');
 
+  const [dragOver, setDragOver] = useState(false);
+
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -39,6 +41,25 @@ function CertificateUploader({ onUploadSuccess }) {
         };
         fileReader.readAsArrayBuffer(selectedFile);
       }
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+    const selectedFile = e.dataTransfer.files[0];
+    if (selectedFile) {
+      handleFileChange({ target: { files: [selectedFile] } });
     }
   };
 
@@ -115,12 +136,17 @@ function CertificateUploader({ onUploadSuccess }) {
       </div>
       <div className="form-group">
         <label className="form-label">Certificate File (PDF, PNG, JPG)</label>
-        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+        <div 
+          className={`file-upload-container ${dragOver ? 'drag-over' : ''}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
           <div className="text-center">
             <div className="mt-4 flex text-sm leading-6 text-gray-600">
-              <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+              <label htmlFor="file-upload" className="file-upload-label">
                 <span>Upload a file</span>
-                <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} required />
+                <input id="file-upload" name="file-upload" type="file" className="file-upload-input" onChange={handleFileChange} required />
               </label>
               <p className="pl-1">or drag and drop</p>
             </div>

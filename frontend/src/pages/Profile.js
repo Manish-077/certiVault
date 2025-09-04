@@ -94,9 +94,9 @@ function Profile() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+      <div className="loading-spinner-container">
         <div className="loading-spinner"></div>
-        <p style={{ marginLeft: '1rem', marginTop: '1rem', color: 'var(--color-text-muted)' }}>Loading your certificates...</p>
+        <p className="mt-4 text-lg text-gray-500">Loading your certificates...</p>
       </div>
     );
   }
@@ -108,15 +108,15 @@ function Profile() {
         <p className="text-lg text-gray-500">All your certifications in one place.</p>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-        <div className="relative flex-grow w-full md:w-auto">
-          <FaFilter className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400" />
+      <div className="filter-bar">
+        <div className="filter-input-container">
+          <FaFilter className="filter-input-icon" />
           <input
             type="text"
             placeholder="Filter by tag (e.g., React, AWS)..."
             value={filterTag}
             onChange={e => setFilterTag(e.target.value)}
-            className="form-input pl-10 w-full"
+            className="form-input filter-input w-full"
           />
         </div>
         <div className="flex gap-4 w-full md:w-auto">
@@ -132,7 +132,7 @@ function Profile() {
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
       {filteredCertificates.length === 0 && !loading ? (
-        <div className="card p-8 text-center text-gray-600">
+        <div className="card empty-state">
           <h2 className="text-2xl font-semibold mb-4">Your Portfolio is Empty</h2>
           <p className="mb-6">It looks like you haven't uploaded any certificates yet. Let's change that!</p>
           <button onClick={() => navigate('/upload')} className="btn btn-primary">Upload Your First Certificate</button>

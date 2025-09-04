@@ -75,7 +75,7 @@ function UserProfile() {
   };
 
   if (loading && !user) {
-    return <div className="container py-8 text-center">Loading profile...</div>;
+    return <div className="loading-spinner-container"><div className="loading-spinner"></div></div>;
   }
 
   if (!user) {

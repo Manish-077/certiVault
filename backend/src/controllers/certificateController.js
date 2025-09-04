@@ -62,7 +62,7 @@ export async function listPublicCertificates(req, res) {
   }
 }
 
-export async function deleteCertificate(req, res) {
+export async function deleteCertificate(req, res, next) {
   try {
     const { id } = req.params;
     // Ensure the user owns the certificate before deleting
@@ -72,7 +72,7 @@ export async function deleteCertificate(req, res) {
     }
     res.json({ message: 'Certificate deleted successfully' });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    next(e);
   }
 }
 

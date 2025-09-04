@@ -4,11 +4,7 @@ import { createCertificate, listCertificates, deleteCertificate, listPublicCerti
 
 const router = express.Router();
 
-// Debugging middleware for this router
-router.use((req, res, next) => {
-  console.log(`Certificate Router Hit: ${req.method} ${req.url}`);
-  next();
-});
+
 
 router.get('/hello', (req, res) => res.send('Hello from certificate routes!'));
 router.get('/', authMiddleware, listCertificates);

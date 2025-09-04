@@ -42,7 +42,7 @@ export async function updateMe(req, res) {
   }
 }
 
-export async function getPublicProfile(req, res) {
+export async function getPublicProfile(req, res, next) {
   try {
     const user = await User.findById(req.params.userId).select('-passwordHash');
     if (!user) {
@@ -50,6 +50,6 @@ export async function getPublicProfile(req, res) {
     }
     res.json(user);
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    next(e);
   }
 }

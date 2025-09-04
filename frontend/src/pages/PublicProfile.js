@@ -64,9 +64,9 @@ function PublicProfile() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+      <div className="loading-spinner-container">
         <div className="loading-spinner"></div>
-        <p style={{ marginLeft: '1rem', marginTop: '1rem', color: 'var(--color-text-muted)' }}>Loading profile...</p>
+        <p className="mt-4 text-lg text-gray-500">Loading profile...</p>
       </div>
     );
   }
@@ -120,7 +120,7 @@ function PublicProfile() {
       </div>
 
       {certificates.length === 0 ? (
-        <div className="card p-8 text-center text-gray-600">
+        <div className="card empty-state">
           <p>This user has not uploaded any certificates yet.</p>
         </div>
       ) : (

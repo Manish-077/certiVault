@@ -53,7 +53,7 @@ function Login({ onLogin }) {
         
         <div className="form-group">
           <label htmlFor="password" className="form-label">Password</label>
-          <div style={{ position: 'relative' }}>
+          <div className="form-input-container">
             <input
               id="password"
               type={showPassword ? 'text' : 'password'}
@@ -65,15 +65,7 @@ function Login({ onLogin }) {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              style={{
-                position: 'absolute',
-                right: '10px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-              }}
+              className="password-toggle-btn"
             >
               {showPassword ? 'Hide' : 'Show'}
             </button>

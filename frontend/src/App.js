@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import { logout } from './utils/api';
 import Login from './components/Login';
@@ -8,6 +8,7 @@ import About from './components/About';
 import UserProfile from './components/UserProfile';
 import PublicProfile from './pages/PublicProfile';
 import './App.css';
+import { FaSun, FaMoon } from 'react-icons/fa';
 
 // Function to check if a token exists in local storage
 const isAuthenticated = () => !!localStorage.getItem('token');
@@ -21,7 +22,21 @@ function PrivateRoute({ children }) {
 
 function App() {
   const [isAuthed, setIsAuthed] = useState(isAuthenticated());
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) return savedTheme;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
 
   const handleLogout = () => {
     logout();
@@ -48,6 +63,9 @@ function App() {
             ) : (
               <Link to="/login" className="btn btn-primary">Login</Link>
             )}
+            <button onClick={toggleTheme} className="btn btn-secondary" style={{ marginLeft: '1rem' }}>
+              {theme === 'light' ? <FaMoon /> : <FaSun />}
+            </button>
           </div>
         </div>
       </header>

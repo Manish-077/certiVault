@@ -20,17 +20,17 @@ function About() {
 
       <div className="about-page">
         <div className="feature-grid mb-12">
-          <div className="card p-6 text-center fade-in-up" style={{animationDelay: '0.2s'}}>
+          <div className="card p-6 text-center fade-in-up animation-delay-200">
             <FaShieldAlt className="text-4xl text-indigo-500 mx-auto mb-4" />
             <h3 className="text-2xl font-semibold mb-3">🔐 Secure Authentication</h3>
             <p className="text-gray-600">Your portfolio is protected with secure email and password login, powered by JSON Web Tokens (JWT).</p>
           </div>
-          <div className="card p-6 text-center fade-in-up" style={{animationDelay: '0.4s'}}>
+          <div className="card p-6 text-center fade-in-up animation-delay-400">
             <FaRocket className="text-4xl text-indigo-500 mx-auto mb-4" />
             <h3 className="text-2xl font-semibold mb-3">🚀 Fast & Reliable Uploads</h3>
             <p className="text-gray-600">Quickly upload your images and PDFs. Your files are hosted securely and reliably.</p>
           </div>
-          <div className="card p-6 text-center fade-in-up" style={{animationDelay: '0.6s'}}>
+          <div className="card p-6 text-center fade-in-up animation-delay-600">
             <FaCogs className="text-4xl text-indigo-500 mx-auto mb-4" />
             <h3 className="text-2xl font-semibold mb-3">⚙️ Effortless Management</h3>
             <p className="text-gray-600">Easily add, filter, and delete certificates from your personal dashboard at any time.</p>
