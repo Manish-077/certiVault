@@ -24,12 +24,13 @@ const MONGO_URI = process.env.MONGO_URI;
 
 // Debug: check if env is loading
 console.log("Loaded MONGO_URI:", MONGO_URI ? "✅ Found" : "❌ Missing");
+console.log("FRONTEND_URL from env:", process.env.FRONTEND_URL);
 
 // Middleware
 app.use(helmet());
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? 'YOUR_FRONTEND_URL' // Replace with your actual frontend URL in .env
+    ? process.env.FRONTEND_URL // Replace with your actual frontend URL in .env
     : 'http://localhost:3000', // For development
   optionsSuccessStatus: 200
 };
