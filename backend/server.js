@@ -71,13 +71,7 @@ app.use('/api/upload', uploadRoutes);
 // Health check
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
-// Serve frontend in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/build')));
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
-  });
-}
+
 
 // Global error handler
 app.use((err, req, res, next) => {
